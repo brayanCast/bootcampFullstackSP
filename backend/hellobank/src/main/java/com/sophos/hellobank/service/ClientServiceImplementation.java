@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sophos.hellobank.entity.Client;
+//import com.sophos.hellobank.entity.User;
 import com.sophos.hellobank.repository.ClientRepository;
 
 
@@ -19,14 +20,19 @@ public class ClientServiceImplementation implements ClientService{
     ClientRepository clientRepository;
 
     @Override
-    public long ageClient(LocalDate birthDateClient, LocalDate creationDateCient) {
-        return YEARS.between(birthDateClient, creationDateCient);
+    public long ageClient(LocalDate birthDate_client, LocalDate creationDate_client) {
+        return YEARS.between(birthDate_client, creationDate_client);
     }
 
     //Metodo para crear todos los clientes
     @Override
     public Client createClient(Client client){
-           return clientRepository.save(client);
+        /*User user =new User();
+        user.getDocumentNumber_user();
+        user.getName_user();
+        user.getLastName_user();
+        */
+        return clientRepository.save(client);
     }
 
     //Metodo para obtener todos los clientes
@@ -35,10 +41,10 @@ public class ClientServiceImplementation implements ClientService{
         return clientRepository.findAll();
     }
   
-    //Metodo ara consultar y modificar los clientes por Id
+    //Metodo para consultar y modificar los clientes por Id
     @Override
-    public Optional<Client> getClientById(int idClient) {
-        return clientRepository.findById(idClient);
+    public Optional<Client> getClientById(int id_client) {
+        return clientRepository.findById(id_client);
     }
 
     @Override
@@ -46,28 +52,27 @@ public class ClientServiceImplementation implements ClientService{
         
         boolean clientFound = true;
         for(Client existClient : getAllClients()){
-            if(existClient.getIdClient() == client.getIdClient()){
+            if(existClient.getId_client() == client.getId_client()){
                 clientFound = true;
-                existClient.setDocumentTypeClient(client.getDocumentTypeClient());
-                existClient.setNumberDocumentClient(client.getNumberDocumentClient());
-                existClient.setNameClient(client.getNameClient());
-                existClient.setLastNameClient(client.getLastNameClient());
-                existClient.setEmailClient(client.getEmailClient());
-                existClient.setBirthDateClient(client.getBirthDateClient());
+                existClient.setDocumentType_client(client.getDocumentType_client());
+                existClient.setNumberDocument_client(client.getNumberDocument_client());//Puede que necesite condicional
+                existClient.setName_client(client.getName_client());
+                existClient.setLastName_client(client.getLastName_client());
+                existClient.setEmail_client(client.getEmail_client());
+                existClient.setBirthDate_client(client.getBirthDate_client());
 
                 existClient.getModificationDateClient();
             }
         }
         if(!clientFound) getAllClients().add(client);
         return clientRepository.save(client);
-
     }
 
     //Metodo para eliminar los clientes por Id
     @Override
-    public boolean deleteClientById(int idClient) {
-        return getClientById(idClient).map(client ->{
-            clientRepository.deleteById(idClient);
+    public boolean deleteClientById(int id_client) {
+        return getClientById(id_client).map(client ->{
+            clientRepository.deleteById(id_client);
             return true;
         }).orElse(false);
     }

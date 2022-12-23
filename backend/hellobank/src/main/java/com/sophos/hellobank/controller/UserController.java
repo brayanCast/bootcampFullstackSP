@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+//import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sophos.hellobank.entity.User;
@@ -31,13 +33,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        user.setPasswordUser(Hash.sha1(user.getPasswordUser()));
+        user.setPassword_user(Hash.sha1(user.getPassword_user()));
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user){
-        user.setPasswordUser(Hash.sha1(user.getPasswordUser()));
+        user.setPassword_user(Hash.sha1(user.getPassword_user()));
         try {
             userService.updateUser(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -47,23 +49,22 @@ public class UserController {
         }
     }
 
-
     @GetMapping(value = "/list")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/list/{idUser}")
-    public ResponseEntity<User> getUserById(@PathVariable("idUser") int idUser) {
-        return userService.getUserById(idUser)
+    @GetMapping(value = "/list/{id_user}")
+    public ResponseEntity<User> getUserById(@PathVariable("id_user") int id_user) {
+
+        return userService.getUserById(id_user)
         .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
-
-    @DeleteMapping(value = "/list/{idUser}")
-    public ResponseEntity<User> deleteUserById(@PathVariable("idUser") int idUser) {
-        if (userService.deleteUserById(idUser)) {
+    @DeleteMapping(value = "/list/{id_user}")
+    public ResponseEntity<User> deleteUserById(@PathVariable("id_user") int id_user) {
+        if (userService.deleteUserById(id_user)) {
             return new ResponseEntity<>( HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -72,9 +73,12 @@ public class UserController {
     
     @GetMapping(value = "/login")
     @ResponseBody
-    public ResponseEntity<List<User>> login(@RequestHeader("user")int documentNumberUser,@RequestHeader("password")String passwordUser) {
-        passwordUser=Hash.sha1(passwordUser);
-        return login(documentNumberUser, passwordUser);
+    public ResponseEntity<User> login(@RequestHeader("user")int documentNumber_user, @RequestHeader("password")String password_user) {
+        password_user=Hash.sha1(password_user);
+        try {
+            return new ResponseEntity<>(userRepository.findUserByDocumentAndPassword(documentNumber_user, password_user), HttpStatus.OK);
+        } catch (Error e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
-    
 }

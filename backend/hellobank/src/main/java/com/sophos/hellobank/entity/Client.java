@@ -3,14 +3,23 @@ package com.sophos.hellobank.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.sophos.hellobank.enuminterface.DocumentType;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,64 +31,77 @@ public class Client implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idClient")
-    private int idClient ;
+    @Column(name="id_client")
+    private int id_client;
 
-    @Column(name="numberDocumentClient")
-    private int numberDocumentClient ;
+    @Column(name="numberDocument_client", unique = true)
+    private int numberDocument_client ;
 
-    @Column(name="documentTypeClient")
-    private String documentTypeClient;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="documentType_client")
+    private DocumentType documentType_client;
+    private String driverLicense, identityCard, socialSecurityCard, passportCard;
+    
+    @Column(name="name_client")
+    private String name_client;
 
-    @Column(name="nameClient")
-    private String nameClient;
+    @Column(name="lastName_client")
+    private String lastName_client;
 
-    @Column(name="lastNameClient")
-    private String lastNameClient ;
+    @Column(name="email_client")
+    private String email_client;
 
-    @Column(name="emailClient")
-    private String emailClient;
+    @Column(name="birthDate_client")
+    private LocalDate birthDate_client;
 
-    @Column(name="birthDateClient")
-    private LocalDate birthDateClient;
-
-    @Column(name="creationDateCient")
-    private LocalDate creationDateCient = LocalDate.now();
+    @Column(name="creationDate_client")
+    private LocalDate creationDate_client = LocalDate.now();
 
     @Column(name="modificationDateClient")
     private LocalDateTime modificationDateClient =  LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name="idUser")
-    private User idUser;
+    @JoinColumn(name="id_user")
+    private User user;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<Account> account;
 
     public Client() {
     }
 
-    public Client(int idClient, int numberDocumentClient, String documentTypeClient, String nameClient,
-            String lastNameClient, String emailClient, LocalDate birthDateClient, LocalDate creationDateCient,
-            LocalDateTime modificationDateClient, User idUser) {
-        this.idClient = idClient;
-        this.numberDocumentClient = numberDocumentClient;
-        this.documentTypeClient = documentTypeClient;
-        this.nameClient = nameClient;
-        this.lastNameClient = lastNameClient;
-        this.emailClient = emailClient;
-        this.birthDateClient = birthDateClient;
-        this.creationDateCient = creationDateCient;
+    public Client(int id_client, int numberDocument_client, DocumentType documentType_client, String driverLicense,
+            String identityCard, String socialSecurityCard, String passportCard, String name_client,
+            String lastName_client, String email_client, LocalDate birthDate_client, LocalDate creationDate_client,
+            LocalDateTime modificationDateClient, User user, List<Account> account) {
+        this.id_client = id_client;
+        this.numberDocument_client = numberDocument_client;
+        this.documentType_client = documentType_client;
+        this.driverLicense = driverLicense;
+        this.identityCard = identityCard;
+        this.socialSecurityCard = socialSecurityCard;
+        this.passportCard = passportCard;
+        this.name_client = name_client;
+        this.lastName_client = lastName_client;
+        this.email_client = email_client;
+        this.birthDate_client = birthDate_client;
+        this.creationDate_client = creationDate_client;
         this.modificationDateClient = modificationDateClient;
-        this.idUser = idUser;
+        this.user = user;
+        this.account = account;
     }
 
     @Override
     public String toString() {
-        return "Client [idClient=" + idClient + ", numberDocumentClient=" + numberDocumentClient
-                + ", documentTypeClient=" + documentTypeClient + ", nameClient=" + nameClient + ", lastNameClient="
-                + lastNameClient + ", emailClient=" + emailClient + ", birthDateClient=" + birthDateClient
-                + ", creationDateCient=" + creationDateCient + ", modificationDateClient=" + modificationDateClient
-                + ", idUser=" + idUser + "]";
+        return "Client [id_client=" + id_client + ", numberDocument_client=" + numberDocument_client
+                + ", documentType_client=" + documentType_client + ", driverLicense=" + driverLicense
+                + ", identityCard=" + identityCard + ", socialSecurityCard=" + socialSecurityCard + ", passportCard="
+                + passportCard + ", name_client=" + name_client + ", lastName_client=" + lastName_client
+                + ", email_client=" + email_client + ", birthDate_client=" + birthDate_client + ", creationDate_client="
+                + creationDate_client + ", modificationDateClient=" + modificationDateClient + ", user=" + user
+                + ", account=" + account + "]";
     }
 
     
-   
+    
 }

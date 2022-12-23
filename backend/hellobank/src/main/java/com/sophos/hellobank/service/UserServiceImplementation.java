@@ -23,19 +23,17 @@ public class UserServiceImplementation implements UserService {
     public User updateUser(User user) {
         boolean userFound = true;
         for(User existUser : getAllUsers()){
-            if(existUser.getIdUser() == user.getIdUser()){
+            if(existUser.getId_user() == user.getId_user()){
                 userFound = true;
-                existUser.setDocumentNumberUser(user.getDocumentNumberUser());
-                existUser.setNameUser(user.getNameUser());
-                existUser.setLastNameUser(user.getLastNameUser());
-                existUser.setPasswordUser(user.getPasswordUser());
+                existUser.setDocumentNumber_user(user.getDocumentNumber_user());
+                existUser.setName_user(user.getName_user());
+                existUser.setLastName_user(user.getLastName_user());
+                existUser.setPassword_user(user.getPassword_user());
             }
         }
         if(!userFound) getAllUsers().add(user);
         return userRepository.save(user);
-        
     }
-
 
     @Override
     public List<User> getAllUsers() {
@@ -43,22 +41,21 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(int id_admin) {
-        return userRepository.findById(id_admin);
+    public Optional<User> getUserById(int id_user) {
+        return userRepository.findById(id_user);
     }
 
 
     @Override
-    public boolean deleteUserById(int id_admin) {
-        return getUserById(id_admin).map(user -> {
-            userRepository.deleteById(id_admin);
+    public boolean deleteUserById(int id_user) {
+        return getUserById(id_user).map(user -> {
+            userRepository.deleteById(id_user);
             return true;
         }).orElse(false);
     }
 
     @Override
-    public User login(int documentNumberUser, String passwordUser) {
-        return userRepository.findUserByDocumentAndPassword(documentNumberUser, passwordUser);
+    public User login(int documentNumber_user, String password_user) {
+        return userRepository.findUserByDocumentAndPassword(documentNumber_user, password_user);
     }
-    
 }

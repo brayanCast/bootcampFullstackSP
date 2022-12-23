@@ -30,22 +30,11 @@ public class ClientController{
     @Autowired
     ClientRepository clientRepository;
 
-    @GetMapping("/list")
-    public ResponseEntity<List<Client>> getClients(){
-        return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
-    } 
-
-    @GetMapping("/list/{idClient}")
-    public ResponseEntity<Client> getClientById(@PathVariable("idClient")int idClient){
-        return clientService.getClientById(idClient).map(client -> new ResponseEntity<>(client, HttpStatus.OK))
-        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping("/")
+    @PostMapping
     //@ResponseBody
-    public ResponseEntity<Client> createClient(@RequestBody Client client, LocalDate birthDateClient, LocalDate creationDateCient){
+    public ResponseEntity<Client> createClient(@RequestBody Client client, LocalDate birthDate_client, LocalDate creationDate_client){
        
-        if(clientService.ageClient(birthDateClient, creationDateCient) >= 18){
+        if(clientService.ageClient(birthDate_client, creationDate_client) >= 18){
         return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
         }
         else{
@@ -53,7 +42,18 @@ public class ClientController{
         }
     }
 
-    @PutMapping("/{idClient}")
+    @GetMapping("/list")
+    public ResponseEntity<List<Client>> getClients(){
+        return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
+    } 
+
+    @GetMapping("/list/{id_client}")
+    public ResponseEntity<Client> getClientById(@PathVariable("id_client")int id_client){
+        return clientService.getClientById(id_client).map(client -> new ResponseEntity<>(client, HttpStatus.OK))
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping
     //@ResponseBody
     public ResponseEntity<Client> updateClient(@RequestBody Client client){
         try {
@@ -65,10 +65,10 @@ public class ClientController{
         }
     }
     
-    @DeleteMapping("/list/{idClient}")
-    public ResponseEntity<Client> deleteClientById(@PathVariable("idClient") int idClient){
+    @DeleteMapping("/list/{id_client}")
+    public ResponseEntity<Client> deleteClientById(@PathVariable("id_client") int id_client){
         
-        if(clientService.deleteClientById(idClient)){
+        if(clientService.deleteClientById(id_client)){
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else{
