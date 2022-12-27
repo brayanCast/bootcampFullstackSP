@@ -7,8 +7,8 @@ import com.sophos.hellobank.entity.User;
 
 @CrossOrigin
 public interface UserRepository extends JpaRepository<User, Integer>{
-    @Query("SELECT u FROM User u WHERE u.documentNumber_user = ?1 and  u.password_user = ?2")
-    User findUserByDocumentAndPassword(int documentNumber_user, String password_user);
+    @Query("SELECT u FROM User u WHERE u.documentNumberUser = ?1 and  u.passwordUser = ?2")
+    User findUserBydocumentNumberUserAndpasswordUser(int documentNumberUser, String passwordUser);
 }
 
 

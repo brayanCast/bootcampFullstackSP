@@ -31,7 +31,7 @@ public class AccountController {
     AccountService accountService;
 
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account){
         try {
             accountService.createAccount(account);
@@ -49,15 +49,15 @@ public class AccountController {
 
     //Cosulta la cuenta por Id
     @GetMapping("/list/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable int id_account){
+    public ResponseEntity<Account> getAccountById(@PathVariable int idAccount){
         try {
-            return new ResponseEntity<Account>(accountService.getAccountById(id_account), HttpStatus.OK);
+            return new ResponseEntity<Account>(accountService.getAccountById(idAccount), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     //@ResponseBody
     public ResponseEntity<Account> updateAccount(@RequestBody Account account){
         try {
@@ -70,9 +70,9 @@ public class AccountController {
     }
 
     @DeleteMapping(value = "/list/{id}")
-    public ResponseEntity<Account> deleteAccountById(@PathVariable int id_account) {
+    public ResponseEntity<Account> deleteAccountById(@PathVariable int idAccount) {
         try {
-            accountService.deleteAccountById(id_account);
+            accountService.deleteAccountById(idAccount);
             return new ResponseEntity<Account>(HttpStatus.OK);
             
         } catch (Exception e) {

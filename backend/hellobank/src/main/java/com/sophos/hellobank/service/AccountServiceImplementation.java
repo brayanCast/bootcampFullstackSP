@@ -1,5 +1,6 @@
 package com.sophos.hellobank.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ public class AccountServiceImplementation implements AccountService{
     
     @Autowired
     AccountRepository accountRespository;
-  
-    Client accountState;
 
     @Override
     public Account createAccount(Account account){
@@ -24,20 +23,26 @@ public class AccountServiceImplementation implements AccountService{
         Account number = new Account();
         Client clientCreated = new Client();
 
-        if(account.getBalance_account() > 0 && clientCreated.getId_client() != 0){
-            if(account.getType_account() == "Current Account"){
+        if(account.getBalanceAccount() > 0 && clientCreated.getIdClient() != 0){
+            if(account.getTypeAccount() == "Current Account"){
                 initialNumAccount = "23";
-                account.setStateAccount(StateAccount.ACTIVATE);
+                account.setStateAccount(StateAccount.ACTIVE);
+                account.setCreationDate(LocalDate.now());
+                account.setModificationDate(null);
             }
-            else if(account.getType_account() == "Savings Account"){
+            else if(account.getTypeAccount() == "Savings Account"){
                 initialNumAccount = "46";
-                account.setStateAccount(StateAccount.ACTIVATE);
+                account.setStateAccount(StateAccount.ACTIVE);
+                account.setCreationDate(LocalDate.now());
+                account.setModificationDate(null);
             }
+            
             for(int i=1; i<=8; i++){
-                number.setNumber_account((int)Math.random()*10);
-                initialNumAccount = initialNumAccount + number.getNumber_account();
+                number.setNumberAccount((int)Math.random()*10);
+                initialNumAccount = initialNumAccount + number.getNumberAccount();//REVISAR
             }
         }
+        
         return accountRespository.save(account);
     }
 
@@ -47,21 +52,21 @@ public class AccountServiceImplementation implements AccountService{
     }
 
     @Override
-    public Account getAccountById(int id_account) {
-        return accountRespository.findById(id_account).orElse(null);
+    public Account getAccountById(int idAccount) {
+        return accountRespository.findById(idAccount).orElse(null);
     }
 
     @Override
     public Account updateAccount(Account account) {
         boolean accountFound = false;
         for(Account existAccount : getAllAccounts()){
-            if(existAccount.getId_account() == account.getId_account()){
+            if(existAccount.getIdAccount() == account.getIdAccount()){
                 accountFound = true;
-                existAccount.setNumber_account(account.getNumber_account());
-                existAccount.setStateAccount(account.getStateAccount());
-                existAccount.setBalance_account(account.getBalance_account());
-                existAccount.setAvailable_balance(account.getAvailable_balance());
-                existAccount.setModificationDate_account(account.getModificationDate_account());
+                existAccount.setNumberAccount(account.getNumberAccount());
+                existAccount.setTypeAccount(account.getTypeAccount());
+                existAccount.setBalanceAccount(account.getBalanceAccount());
+                existAccount.setAvailableBalance(account.getAvailableBalance());
+                existAccount.setModificationDate(account.getModificationDate());
             }
         }
         if(!accountFound) getAllAccounts().add(account);
@@ -69,18 +74,18 @@ public class AccountServiceImplementation implements AccountService{
     }
 
     @Override
-    public void deleteAccountById(int id_account) {
+    public void deleteAccountById(int idAccount) {
         Account account = new Account();
-        double balance =  account.getBalance_account();
-        double availableBalance = account.getAvailable_balance();
+        double balance =  account.getBalanceAccount();
+        double availableBalance = account.getAvailableBalance();
 
         if(balance < 1 && availableBalance < 1 ){
-            if(account.getType_account() == "Current Account"){
-                accountRespository.deleteById(id_account);
+            if(account.getTypeAccount() == "Current Account"){
+                accountRespository.deleteById(idAccount);
                 account.setStateAccount(StateAccount.CANCELLED);
             }
-            else if(account.getType_account() == "Savings Account" && availableBalance > 0){
-                accountRespository.deleteById(id_account);
+            else if(account.getTypeAccount() == "Savings Account" && availableBalance > 0){
+                accountRespository.deleteById(idAccount);
                 account.setStateAccount(StateAccount.CANCELLED);
             }
         }

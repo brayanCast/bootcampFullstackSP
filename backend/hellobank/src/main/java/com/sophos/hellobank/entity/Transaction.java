@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.sophos.hellobank.enuminterface.TypeTransactionEnum;
+import com.sophos.hellobank.enuminterface.TypeTransaction;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,56 +25,41 @@ public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_transaction", unique = true)
-    private int id_transaction;
+    @Column(name="idTransaction", unique = true)
+    private int idTransaction;
 
-    @Column(name="type_transaction")
-    private TypeTransactionEnum type_transaction;
-    private String consignment, retirement, transferIntoAccount;
+    @Column(name="typeTransaction")
+    private TypeTransaction typeTransaction;
 
-    @Column(name="dateMovement_transaction")
-    private LocalDateTime dateMovement_transaction;
+    @Column(name="dateMovementTransaction")
+    private LocalDateTime dateMovementTransaction;
 
-    @Column(name="description_transaction")
-    private String description_transaction;
+    @Column(name="descriptionTransaction")
+    private String descriptionTransaction;
 
-    @Column(name="value_transaction ")
-    private double value_transaction;
+    @Column(name="valueTransaction")
+    private double valueTransaction;
 
-    @Column(name="typeMovement_transaction")
-    private String typeMovement_transaction;
+    @Column(name="typeMovementTransaction")
+    private String typeMovementTransaction;
 
     @ManyToOne
-    @JoinColumn(name="id_account ")
-    private Account id_account;
+    @JoinColumn(name="idAccount ")
+    private Account idAccount;
 
 
     public Transaction() {
     }
 
-
-    public Transaction(int id_transaction, TypeTransactionEnum type_transaction, String consignment, String retirement,
-            String transferIntoAccount, LocalDateTime dateMovement_transaction, String description_transaction,
-            double value_transaction, String typeMovement_transaction, Account id_account) {
-        this.id_transaction = id_transaction;
-        this.type_transaction = type_transaction;
-        this.consignment = consignment;
-        this.retirement = retirement;
-        this.transferIntoAccount = transferIntoAccount;
-        this.dateMovement_transaction = dateMovement_transaction;
-        this.description_transaction = description_transaction;
-        this.value_transaction = value_transaction;
-        this.typeMovement_transaction = typeMovement_transaction;
-        this.id_account = id_account;
+    public Transaction(int idTransaction, TypeTransaction typeTransaction, LocalDateTime dateMovementTransaction,
+            String descriptionTransaction, double valueTransaction, String typeMovementTransaction, Account idAccount) {
+        this.idTransaction = idTransaction;
+        this.typeTransaction = typeTransaction;
+        this.dateMovementTransaction = dateMovementTransaction;
+        this.descriptionTransaction = descriptionTransaction;
+        this.valueTransaction = valueTransaction;
+        this.typeMovementTransaction = typeMovementTransaction;
+        this.idAccount = idAccount;
     }
 
-    @Override
-    public String toString() {
-        return "Transaction [id_transaction=" + id_transaction + ", type_transaction=" + type_transaction
-                + ", consignment=" + consignment + ", retirement=" + retirement + ", transferIntoAccount="
-                + transferIntoAccount + ", dateMovement_transaction=" + dateMovement_transaction
-                + ", description_transaction=" + description_transaction + ", value_transaction=" + value_transaction
-                + ", typeMovement_transaction=" + typeMovement_transaction + ", id_account=" + id_account + "]";
-    }
- 
 }

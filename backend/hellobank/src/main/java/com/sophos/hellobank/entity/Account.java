@@ -8,8 +8,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,34 +28,32 @@ import lombok.Setter;
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_account")
-    private int id_account;
+    @Column(name="idAccount")
+    private int idAccount;
 
-    @Column(name="number_account", unique = true)
-    private int number_account;
+    @Column(name="numberAccount", unique = true)
+    private int numberAccount;
 
-    @Column(name="type_account")
-    private String type_account;
+    @Column(name="typeAccount")
+    private String typeAccount;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name="state_account")
+    @Column(name="stateAccount")
     private StateAccount stateAccount;
-    private String activateState,  inactivateState,  cancelledState;
 
-    @Column(name="balance_account")
-    private double balance_account;
+    @Column(name="balanceAccount")
+    private double balanceAccount;
 
-    @Column(name="available_balance")
-    private double available_balance;
+    @Column(name="availableBalance")
+    private double availableBalance;
 
-    @Column(name="creationDate_account")
-    private LocalDate creation_date;
+    @Column(name="creationDate")
+    private LocalDate creationDate;
 
-    @Column(name="modification_date")
-    private LocalDateTime modificationDate_account;
+    @Column(name="modificationDate")
+    private LocalDateTime modificationDate;
 
     @ManyToOne
-    @JoinColumn(name="id_client")
+    @JoinColumn(name="idClient")
     private Client client;
 
     @OneToMany(cascade = CascadeType.PERSIST)
@@ -68,33 +64,27 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(int id_account, int number_account, String type_account, StateAccount stateAccount,
-            String activateState, String inactivateState, String cancelledState, double balance_account,
-            double available_balance, LocalDate creation_date, LocalDateTime modificationDate_account, User user,
+    public Account(int idAccount, int numberAccount, String typeAccount, StateAccount stateAccount,
+            double balanceAccount, double availableBalance, LocalDate creationDate, LocalDateTime modificationDate,
             Client client, List<Transaction> transaction) {
-        this.id_account = id_account;
-        this.number_account = number_account;
-        this.type_account = type_account;
+        this.idAccount = idAccount;
+        this.numberAccount = numberAccount;
+        this.typeAccount = typeAccount;
         this.stateAccount = stateAccount;
-        this.activateState = activateState;
-        this.inactivateState = inactivateState;
-        this.cancelledState = cancelledState;
-        this.balance_account = balance_account;
-        this.available_balance = available_balance;
-        this.creation_date = creation_date;
-        this.modificationDate_account = modificationDate_account;
+        this.balanceAccount = balanceAccount;
+        this.availableBalance = availableBalance;
+        this.creationDate = creationDate;
+        this.modificationDate = modificationDate;
         this.client = client;
         this.transaction = transaction;
     }
 
     @Override
     public String toString() {
-        return "Account [id_account=" + id_account + ", number_account=" + number_account + ", type_account="
-                + type_account + ", stateAccount=" + stateAccount + ", activateState=" + activateState
-                + ", inactivateState=" + inactivateState + ", cancelledState=" + cancelledState + ", balance_account="
-                + balance_account + ", available_balance=" + available_balance + ", creation_date=" + creation_date
-                + ", modificationDate_account=" + modificationDate_account  + ", client=" + client
-                + ", transaction=" + transaction + "]";
+        return "Account [idAccount=" + idAccount + ", numberAccount=" + numberAccount + ", typeAccount=" + typeAccount
+                + ", stateAccount=" + stateAccount + ", balanceAccount=" + balanceAccount + ", availableBalance="
+                + availableBalance + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
+                + ", client=" + client + ", transaction=" + transaction + "]";
     }
     
 }

@@ -1,26 +1,30 @@
 package com.sophos.hellobank.enuminterface;
 
-public enum StateAccount implements StateAccountInterface{
+import java.util.stream.Stream;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
+public enum StateAccount{
 
-    ACTIVATE{
-        @Override
-        public String states(String activateState, String inactivateState, String cancelledState){
-            return activateState;
-        }
-        
-    },
+    ACTIVE("Active"),
+    INACTIVE("Inactive"),
+    CANCELLED("Canceled");
 
-     INACTIVE{
-        @Override
-        public String states(String activateState,  String inactivateState, String cancelledState){
-            return inactivateState;
-        }
-    },
+    private final String stateAccount;
 
-     CANCELLED{
-        public String states(String activateState,  String inactivateState, String cancelledState){
-            return cancelledState;
-        }
-     }
+    private StateAccount(String stateAccount) {
+        this.stateAccount = stateAccount;
+    }
+
+    @JsonCreator
+    public static StateAccount decode(final String stateAccount){
+        return Stream.of(StateAccount.values()).filter(targetEnum -> 
+        targetEnum.stateAccount.equals(stateAccount)).findFirst().orElse(null);
+    }
+
+    @JsonValue
+    public String getStateAccount(){
+        return stateAccount;
+    }
+    
 }

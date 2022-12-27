@@ -33,13 +33,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        user.setPassword_user(Hash.sha1(user.getPassword_user()));
+        user.setPasswordUser(Hash.sha1(user.getPasswordUser()));
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user){
-        user.setPassword_user(Hash.sha1(user.getPassword_user()));
+        user.setPasswordUser(Hash.sha1(user.getPasswordUser()));
         try {
             userService.updateUser(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -54,17 +54,17 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/list/{id_user}")
-    public ResponseEntity<User> getUserById(@PathVariable("id_user") int id_user) {
+    @GetMapping(value = "/list/{idUser}")
+    public ResponseEntity<User> getUserById(@PathVariable("idUser") int idUser) {
 
-        return userService.getUserById(id_user)
+        return userService.getUserById(idUser)
         .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
-    @DeleteMapping(value = "/list/{id_user}")
-    public ResponseEntity<User> deleteUserById(@PathVariable("id_user") int id_user) {
-        if (userService.deleteUserById(id_user)) {
+    @DeleteMapping(value = "/list/{idUser}")
+    public ResponseEntity<User> deleteUserById(@PathVariable("idUser") int idUser) {
+        if (userService.deleteUserById(idUser)) {
             return new ResponseEntity<>( HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -73,10 +73,10 @@ public class UserController {
     
     @GetMapping(value = "/login")
     @ResponseBody
-    public ResponseEntity<User> login(@RequestHeader("user")int documentNumber_user, @RequestHeader("password")String password_user) {
-        password_user=Hash.sha1(password_user);
+    public ResponseEntity<User> login(@RequestHeader("user")int documentNumber_user, @RequestHeader("password")String passwordUser) {
+        passwordUser=Hash.sha1(passwordUser);
         try {
-            return new ResponseEntity<>(userRepository.findUserByDocumentAndPassword(documentNumber_user, password_user), HttpStatus.OK);
+            return new ResponseEntity<>(userRepository.findUserBydocumentNumberUserAndpasswordUser(documentNumber_user, passwordUser), HttpStatus.OK);
         } catch (Error e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

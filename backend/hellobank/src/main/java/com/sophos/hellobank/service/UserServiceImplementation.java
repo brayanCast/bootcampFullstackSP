@@ -23,12 +23,12 @@ public class UserServiceImplementation implements UserService {
     public User updateUser(User user) {
         boolean userFound = true;
         for(User existUser : getAllUsers()){
-            if(existUser.getId_user() == user.getId_user()){
+            if(existUser.getIdUser() == user.getIdUser()){
                 userFound = true;
-                existUser.setDocumentNumber_user(user.getDocumentNumber_user());
-                existUser.setName_user(user.getName_user());
-                existUser.setLastName_user(user.getLastName_user());
-                existUser.setPassword_user(user.getPassword_user());
+                existUser.setDocumentNumberUser(user.getDocumentNumberUser());
+                existUser.setNameUser(user.getNameUser());
+                existUser.setNameUser(user.getNameUser());
+                existUser.setPasswordUser(user.getPasswordUser());
             }
         }
         if(!userFound) getAllUsers().add(user);
@@ -41,21 +41,21 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(int id_user) {
-        return userRepository.findById(id_user);
+    public Optional<User> getUserById(int idUser) {
+        return userRepository.findById(idUser);
     }
 
 
     @Override
-    public boolean deleteUserById(int id_user) {
-        return getUserById(id_user).map(user -> {
-            userRepository.deleteById(id_user);
+    public boolean deleteUserById(int idUser) {
+        return getUserById(idUser).map(user -> {
+            userRepository.deleteById(idUser);
             return true;
         }).orElse(false);
     }
 
     @Override
-    public User login(int documentNumber_user, String password_user) {
-        return userRepository.findUserByDocumentAndPassword(documentNumber_user, password_user);
+    public User login(int documentNumberUser, String passwordUser) {
+        return userRepository.findUserBydocumentNumberUserAndpasswordUser(documentNumberUser, passwordUser);
     }
 }
