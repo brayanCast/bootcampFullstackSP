@@ -20,12 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sophos.hellobank.entity.Account;
 import com.sophos.hellobank.entity.Client;
 import com.sophos.hellobank.repository.ClientRepository;
+import com.sophos.hellobank.repository.UserRepository;
 import com.sophos.hellobank.service.ClientService;
 
 
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("{nameUser}/client")
 public class ClientController{
 
     @Autowired
@@ -34,13 +35,16 @@ public class ClientController{
     @Autowired
     ClientRepository clientRepository;
 
+    @Autowired
+    UserRepository userRepository;
 
 
     @PostMapping
     //@ResponseBody
-    public ResponseEntity<Client> createClient(@RequestBody Client client){
+    public ResponseEntity<Client> createClient(@RequestBody Client client, @PathVariable("nameUser") String nameUser){
         Optional<Client> existclient = Optional.empty();
         if(clientService.ageClient(client.getBirthDate()) && !existclient.isPresent()){
+            client.setCreationUser(String.format("%s", userRepository.findByNameUser(nameUser).getNameUser()));
             client.setCreationDate(LocalDate.now());
             client.setModificationDate(null);
         return new ResponseEntity<>(clientService.createClient(client), HttpStatus.CREATED);
@@ -61,11 +65,13 @@ public class ClientController{
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/idClient")
+    @PutMapping("/{idClient}")
     //@ResponseBody
-    public ResponseEntity<Client> updateClient(@RequestBody Client client){
+    public ResponseEntity<Client> updateClient(@RequestBody Client client, @PathVariable("nameUser") String nameUser){
         try {
+            client.setModifyUser(String.format("%s", userRepository.findByNameUser(nameUser).getNameUser()));
             clientService.updateClient(client);
+            client.setCreationDate(client.getCreationDate());
             client.setModificationDate(LocalDateTime.now());
             return new ResponseEntity<Client>(client, HttpStatus.OK);
             
@@ -74,7 +80,7 @@ public class ClientController{
         }
     }
     
-    @DeleteMapping("/list/{idClient}")
+    @DeleteMapping("/{idClient}")
     public ResponseEntity<Client> deleteClientById(List<Account> account, @PathVariable("idClient") int idClient)throws Exception{
         
         if(clientService.deleteClientById(idClient)){

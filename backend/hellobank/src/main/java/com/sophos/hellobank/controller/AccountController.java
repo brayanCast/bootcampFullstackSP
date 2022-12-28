@@ -1,6 +1,8 @@
 package com.sophos.hellobank.controller;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account){
         try {
+            account.setCreationDate(LocalDate.now());
             accountService.createAccount(account);
             return new ResponseEntity<Account>(account, HttpStatus.OK);
         } catch (Exception e) {
@@ -48,7 +51,7 @@ public class AccountController {
 
 
     //Cosulta la cuenta por Id
-    @GetMapping("/list/{id}")
+    @GetMapping("/list/{idAccount}")
     public ResponseEntity<Account> getAccountById(@PathVariable int idAccount){
         try {
             return new ResponseEntity<Account>(accountService.getAccountById(idAccount), HttpStatus.OK);
@@ -61,6 +64,7 @@ public class AccountController {
     //@ResponseBody
     public ResponseEntity<Account> updateAccount(@RequestBody Account account){
         try {
+            account.setModificationDate(LocalDateTime.now());
             accountService.updateAccount(account);
             return new ResponseEntity<Account>(account, HttpStatus.OK);
             
@@ -69,7 +73,7 @@ public class AccountController {
         }
     }
 
-    @DeleteMapping(value = "/list/{id}")
+    @DeleteMapping(value = "/{idAccount}")
     public ResponseEntity<Account> deleteAccountById(@PathVariable int idAccount) {
         try {
             accountService.deleteAccountById(idAccount);

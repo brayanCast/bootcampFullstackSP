@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 import com.sophos.hellobank.enuminterface.StateAccount;
 
 import lombok.Getter;
@@ -31,7 +32,7 @@ public class Account implements Serializable {
     @Column(name="idAccount")
     private int idAccount;
 
-    @Column(name="numberAccount", unique = true)
+    @Column(name="numberAccount", unique = true )
     private int numberAccount;
 
     @Column(name="typeAccount")

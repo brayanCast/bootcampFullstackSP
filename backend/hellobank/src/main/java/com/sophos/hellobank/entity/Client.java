@@ -53,6 +53,12 @@ public class Client implements Serializable{
     @Column(name="birthDate")
     private LocalDate birthDate;
 
+    @Column(name="modifyUser")
+    private String modifyUser;
+
+    @Column(name="nameUser")
+    private String creationUser;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name="creationDate")
     private LocalDate creationDate = LocalDate.now();
@@ -71,12 +77,9 @@ public class Client implements Serializable{
     public Client() {
     }
 
-    
-
-
     public Client(int idClient, int numberDocument, DocumentType documentType, String nameClient, String lastNameClient,
-            String emailClient, LocalDate birthDate, LocalDate creationDate, LocalDateTime modificationDate, User user,
-            List<Account> account) {
+            String emailClient, LocalDate birthDate, String modifyUser, String creationUser, LocalDate creationDate,
+            LocalDateTime modificationDate, User user, List<Account> account) {
         this.idClient = idClient;
         this.numberDocument = numberDocument;
         this.documentType = documentType;
@@ -84,22 +87,28 @@ public class Client implements Serializable{
         this.lastNameClient = lastNameClient;
         this.emailClient = emailClient;
         this.birthDate = birthDate;
+        this.modifyUser = modifyUser;
+        this.creationUser = creationUser;
         this.creationDate = creationDate;
         this.modificationDate = modificationDate;
         this.user = user;
         this.account = account;
     }
 
-
-
-
     @Override
     public String toString() {
         return "Client [idClient=" + idClient + ", numberDocument=" + numberDocument + ", documentType=" + documentType
                 + ", nameClient=" + nameClient + ", lastNameClient=" + lastNameClient + ", emailClient=" + emailClient
-                + ", birthDate=" + birthDate + ", creationDate=" + creationDate + ", modificationDate="
-                + modificationDate + ", user=" + user + ", account=" + account + "]";
+                + ", birthDate=" + birthDate + ", modifyUser=" + modifyUser + ", creationUser=" + creationUser
+                + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", user=" + user
+                + ", account=" + account + "]";
     }
+
+    
+    
+
+
+
 
 
     

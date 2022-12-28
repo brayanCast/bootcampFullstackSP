@@ -33,8 +33,8 @@ public class User implements Serializable {
     @Column(name = "nameUser")
     private String nameUser;
 
-    @Column(name = "lasNameUser")
-    private String lasNameUser;
+    @Column(name = "lastNameUser")
+    private String lastNameUser;
 
     @Column(name = "passwordUser")
     private String passwordUser;
@@ -51,12 +51,14 @@ public class User implements Serializable {
         this.passwordUser = passwordUser;
     }
 
-    public User(int idUser, int documentNumberUser, String nameUser, String lasNameUser, String passwordUser,
+    
+
+    public User(int idUser, int documentNumberUser, String nameUser, String lastNameUser, String passwordUser,
             List<Client> client) {
         this.idUser = idUser;
         this.documentNumberUser = documentNumberUser;
         this.nameUser = nameUser;
-        this.lasNameUser = lasNameUser;
+        this.lastNameUser = lastNameUser;
         this.passwordUser = passwordUser;
         this.client = client;
     }
@@ -64,7 +66,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User [idUser=" + idUser + ", documentNumberUser=" + documentNumberUser + ", nameUser=" + nameUser
-                + ", lasNameUser=" + lasNameUser + ", passwordUser=" + passwordUser + ", client=" + client + "]";
+                + ", lastNameUser=" + lastNameUser + ", passwordUser=" + passwordUser + ", client=" + client + "]";
     }
     
 

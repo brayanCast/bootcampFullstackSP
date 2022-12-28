@@ -9,6 +9,7 @@ import com.sophos.hellobank.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
     @Query("SELECT u FROM User u WHERE u.documentNumberUser = ?1 and  u.passwordUser = ?2")
     User findUserBydocumentNumberUserAndpasswordUser(int documentNumberUser, String passwordUser);
+    User findByNameUser(String nameUser);
 }
 
 

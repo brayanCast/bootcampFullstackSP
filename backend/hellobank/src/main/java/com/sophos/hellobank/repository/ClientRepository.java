@@ -5,5 +5,4 @@ import com.sophos.hellobank.entity.Client;
 
 public interface ClientRepository extends JpaRepository<Client, Integer>{
     
-    
 }
