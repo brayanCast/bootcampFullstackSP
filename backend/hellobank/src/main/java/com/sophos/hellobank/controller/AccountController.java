@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sophos.hellobank.entity.Account;
 import com.sophos.hellobank.entity.Client;
 import com.sophos.hellobank.enuminterface.StateAccount;
-import com.sophos.hellobank.enuminterface.TypeAccount;
 import com.sophos.hellobank.repository.AccountRepository;
 import com.sophos.hellobank.service.AccountService;
 
@@ -38,33 +37,32 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account){
-        Optional<Client> clientCreated = Optional.empty();
-        String numberF = Integer.toString(account.getNumberAccount());
-        
+       Optional<Client> clientCreated = Optional.empty();
+
         try {
-            if(account.getBalanceAccount() > 0 && !clientCreated.isPresent()){
-                TypeAccount typeAccount = account.getTypeAccount();
+            if(!clientCreated.isPresent()){
+                String typeAccount = account.getTypeAccount();
                 switch(typeAccount){
-                case CURRENT_ACCOUNT:
-                    account.setTypeAccount(TypeAccount.CURRENT_ACCOUNT);
+                case "Current":
+                    account.setTypeAccount("Current Account");
                     account.setNumberAccount(accountService.numberAccount("46"));
                     account.setCreationDate(LocalDate.now());       
                     account.setStateAccount(StateAccount.ACTIVE);
                     break;
                     
-                case SAVINGS_ACCOUNT:
-                    account.setTypeAccount(TypeAccount.SAVINGS_ACCOUNT);
-                    account.setNumberAccount(accountService.accountNumber(54));
+                case "Saving":
+                    account.setTypeAccount("Savings Account");
+                    account.setNumberAccount(accountService.numberAccount("23"));
                     account.setCreationDate(LocalDate.now());
                     account.setStateAccount(StateAccount.ACTIVE);
                     break;
                 }
+                accountService.createAccount(account);
             }
-
-    
-                return new ResponseEntity<Account>(account, HttpStatus.OK);
+            return new ResponseEntity<Account>(account, HttpStatus.OK);  
+                
         } catch (Exception e) {
-            return new ResponseEntity<>(account, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         
     }
 }

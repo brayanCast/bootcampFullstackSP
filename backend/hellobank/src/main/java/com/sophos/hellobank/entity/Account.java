@@ -3,8 +3,6 @@ package com.sophos.hellobank.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.sophos.hellobank.enuminterface.StateAccount;
-import com.sophos.hellobank.enuminterface.TypeAccount;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,10 +28,10 @@ public class Account implements Serializable {
     private int idAccount;
 
     @Column(name="numberAccount", unique = true )
-    private int numberAccount;
+    private String numberAccount;
 
     @Column(name="typeAccount")
-    private TypeAccount typeAccount;
+    private String typeAccount;
 
     @Column(name="stateAccount")
     private StateAccount stateAccount;
@@ -60,7 +57,7 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(int idAccount, int numberAccount, TypeAccount typeAccount, StateAccount stateAccount,
+    public Account(int idAccount, String numberAccount, String typeAccount, StateAccount stateAccount,
             double balanceAccount, double availableBalance, LocalDate creationDate, LocalDateTime modificationDate,
             Client client) {
         this.idAccount = idAccount;
@@ -73,6 +70,8 @@ public class Account implements Serializable {
         this.modificationDate = modificationDate;
         this.client = client;
     }
+
+
 
     @Override
     public String toString() {

@@ -1,6 +1,5 @@
 package com.sophos.hellobank.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sophos.hellobank.entity.Account;
-
 import com.sophos.hellobank.repository.AccountRepository;
 import com.sophos.hellobank.repository.TransactionRepository;
 
@@ -23,33 +21,9 @@ public class AccountServiceImplementation implements AccountService {
     TransactionRepository transactionRespository;
 
     @Override
-    public Account createAccount(Account account){
+    public Account createAccount(Account account){         
         return accountRespository.save(account);
-    }
-            /*switch(typeAccount){
-                case "Current":
-                    account.setTypeAccount("Current Account");
-                    numberAccount = Integer.parseInt(numberAccount("23"));
-                    account.setNumberAccount(numberAccount);
-                    account.setCreationDate(LocalDate.now());       
-                    account.setStateAccount(StateAccount.ACTIVE);
-                    break;
-                    
-                case "Saving":
-                    account.setTypeAccount("Savings Account");
-                    numberAccount = Integer.parseInt(numberAccount("46"));
-                    account.setNumberAccount(numberAccount);
-                    account.setCreationDate(LocalDate.now());
-                    account.setStateAccount(StateAccount.ACTIVE);
-                    break;
-           }*/
-           
-        
-        
-    
-        
-        
-
+    }        
 
     @Override
     public List<Account> getAllAccounts() {
@@ -91,7 +65,7 @@ public class AccountServiceImplementation implements AccountService {
 
     public String numberRandomGenerated() {
         Random numRandom = new Random();
-        int numRandomGenerated = numRandom.nextInt(99999999);
+        int numRandomGenerated = numRandom.nextInt(999999999);
         return Integer.toString(numRandomGenerated);
 
     }
@@ -101,17 +75,15 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public int accountNumber(Account account){
+    public String accountNumber(Account account){
         String value = null;
-        int finalValue = 0;
         for(Account numAccount : getAllAccounts()){
             if(numAccount.getNumberAccount() == account.getNumberAccount()){
-                int number = numAccount.getNumberAccount();
+                int number = Integer.parseInt(numAccount.getNumberAccount());
                 value = Integer.toString(number += 1);
-                finalValue = Integer.parseInt(value);
             }
     }
-    return finalValue;
+    return value;
 }
 
 
