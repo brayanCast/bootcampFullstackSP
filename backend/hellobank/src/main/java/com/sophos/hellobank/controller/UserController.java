@@ -65,7 +65,7 @@ public class UserController {
     @DeleteMapping(value = "/list/{idUser}")
     public ResponseEntity<User> deleteUserById(@PathVariable("idUser") int idUser) {
         if (userService.deleteUserById(idUser)) {
-            return new ResponseEntity<>( HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

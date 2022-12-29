@@ -4,6 +4,7 @@ package com.sophos.hellobank.service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ClientServiceImplementation implements ClientService{
 
     @Autowired
     ClientRepository clientRepository;
+
+    @Autowired
+    AccountService accountService;
 
     @Override
     public boolean ageClient(LocalDate birthDate) {
@@ -64,17 +68,21 @@ public class ClientServiceImplementation implements ClientService{
 
     @Override
     public boolean deleteClientById(int idClient){
-       Optional<Account> account = Optional.empty();
-        if(!account.isPresent()){
             return getClientById(idClient).map(clients ->{
                 clientRepository.deleteById(idClient);
                 return true;
             }).orElse(false);
-        }
-        else{
-            return false ;
-        }
 
+    }
+    
+    @Override
+    public boolean isPresent(Account account){
+        boolean resourceFound = false;
+    for (Account currentAccount : accountService.getAllAccounts())
+    if (Objects.equals(currentAccount.getStateAccount(), account.getStateAccount())) {
+        resourceFound = true;
+    }
+    return resourceFound;
     }
 
 }

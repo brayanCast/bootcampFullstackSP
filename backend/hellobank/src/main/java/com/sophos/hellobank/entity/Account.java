@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,11 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 import com.sophos.hellobank.enuminterface.StateAccount;
+import com.sophos.hellobank.enuminterface.TypeAccount;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +34,7 @@ public class Account implements Serializable {
     private int numberAccount;
 
     @Column(name="typeAccount")
-    private String typeAccount;
+    private TypeAccount typeAccount;
 
     @Column(name="stateAccount")
     private StateAccount stateAccount;
@@ -57,17 +55,14 @@ public class Account implements Serializable {
     @JoinColumn(name="idClient")
     private Client client;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Transaction> transaction;
-    
     
 
     public Account() {
     }
 
-    public Account(int idAccount, int numberAccount, String typeAccount, StateAccount stateAccount,
+    public Account(int idAccount, int numberAccount, TypeAccount typeAccount, StateAccount stateAccount,
             double balanceAccount, double availableBalance, LocalDate creationDate, LocalDateTime modificationDate,
-            Client client, List<Transaction> transaction) {
+            Client client) {
         this.idAccount = idAccount;
         this.numberAccount = numberAccount;
         this.typeAccount = typeAccount;
@@ -77,7 +72,6 @@ public class Account implements Serializable {
         this.creationDate = creationDate;
         this.modificationDate = modificationDate;
         this.client = client;
-        this.transaction = transaction;
     }
 
     @Override
@@ -85,7 +79,7 @@ public class Account implements Serializable {
         return "Account [idAccount=" + idAccount + ", numberAccount=" + numberAccount + ", typeAccount=" + typeAccount
                 + ", stateAccount=" + stateAccount + ", balanceAccount=" + balanceAccount + ", availableBalance="
                 + availableBalance + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
-                + ", client=" + client + ", transaction=" + transaction + "]";
+                + ", client=" + client +"]";
     }
     
 }

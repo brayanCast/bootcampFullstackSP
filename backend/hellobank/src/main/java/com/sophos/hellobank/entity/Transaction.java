@@ -44,7 +44,7 @@ public class Transaction implements Serializable {
     private String typeMovementTransaction;
 
     @ManyToOne
-    @JoinColumn(name="idAccount ")
+    @JoinColumn(name="idAccount")
     private Account idAccount;
 
 

@@ -1,9 +1,9 @@
 package com.sophos.hellobank.controller;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sophos.hellobank.entity.Account;
+import com.sophos.hellobank.entity.Client;
+import com.sophos.hellobank.enuminterface.StateAccount;
+import com.sophos.hellobank.enuminterface.TypeAccount;
 import com.sophos.hellobank.repository.AccountRepository;
 import com.sophos.hellobank.service.AccountService;
 
@@ -35,30 +38,53 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account){
+        Optional<Client> clientCreated = Optional.empty();
+        String numberF = Integer.toString(account.getNumberAccount());
+        
         try {
-            account.setCreationDate(LocalDate.now());
-            accountService.createAccount(account);
-            return new ResponseEntity<Account>(account, HttpStatus.OK);
+            if(account.getBalanceAccount() > 0 && !clientCreated.isPresent()){
+                TypeAccount typeAccount = account.getTypeAccount();
+                switch(typeAccount){
+                case CURRENT_ACCOUNT:
+                    account.setTypeAccount(TypeAccount.CURRENT_ACCOUNT);
+                    account.setNumberAccount(accountService.numberAccount("46"));
+                    account.setCreationDate(LocalDate.now());       
+                    account.setStateAccount(StateAccount.ACTIVE);
+                    break;
+                    
+                case SAVINGS_ACCOUNT:
+                    account.setTypeAccount(TypeAccount.SAVINGS_ACCOUNT);
+                    account.setNumberAccount(accountService.accountNumber(54));
+                    account.setCreationDate(LocalDate.now());
+                    account.setStateAccount(StateAccount.ACTIVE);
+                    break;
+                }
+            }
+
+    
+                return new ResponseEntity<Account>(account, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(account, HttpStatus.BAD_REQUEST);
-        }
+        
     }
+}
 
-    @GetMapping(value="list")
-    public ResponseEntity<List<Account>> getAccounts(){
+
+    @GetMapping(value="/list")
+    public ResponseEntity<List<Account>> getAllAccounts(){
         return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.FOUND);
     } 
 
 
+
+
     //Cosulta la cuenta por Id
     @GetMapping("/list/{idAccount}")
-    public ResponseEntity<Account> getAccountById(@PathVariable int idAccount){
-        try {
-            return new ResponseEntity<Account>(accountService.getAccountById(idAccount), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Account> getClientById(@PathVariable("idAccount")int idAccount){
+        return accountService.getAccountById(idAccount).map(account -> new ResponseEntity<>(account, HttpStatus.OK))
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
 
     @PutMapping
     //@ResponseBody
@@ -74,7 +100,8 @@ public class AccountController {
     }
 
     @DeleteMapping(value = "/{idAccount}")
-    public ResponseEntity<Account> deleteAccountById(@PathVariable int idAccount) {
+    public ResponseEntity<Account> deleteAccountById(@PathVariable int idAccount){
+
         try {
             accountService.deleteAccountById(idAccount);
             return new ResponseEntity<Account>(HttpStatus.OK);

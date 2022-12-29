@@ -3,13 +3,13 @@ package com.sophos.hellobank.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sophos.hellobank.entity.Account;
-import com.sophos.hellobank.entity.Client;
-import com.sophos.hellobank.enuminterface.StateAccount;
+
 import com.sophos.hellobank.repository.AccountRepository;
 import com.sophos.hellobank.repository.TransactionRepository;
 
@@ -24,39 +24,32 @@ public class AccountServiceImplementation implements AccountService {
 
     @Override
     public Account createAccount(Account account){
-        Optional<Client> clientCreated = Optional.empty();
-        String typeAccount  = account.getTypeAccount();
-        boolean accountFound = true;
-        
-        for(Account numAccount : getAllAccounts()){
-        if(account.getBalanceAccount() > 0 && !clientCreated.isPresent() && numAccount.getNumberAccount() != account.getNumberAccount()){
-            accountFound = false;
-            switch(typeAccount){
+        return accountRespository.save(account);
+    }
+            /*switch(typeAccount){
                 case "Current":
                     account.setTypeAccount("Current Account");
+                    numberAccount = Integer.parseInt(numberAccount("23"));
+                    account.setNumberAccount(numberAccount);
                     account.setCreationDate(LocalDate.now());       
-                    account.setStateAccount(StateAccount.ACTIVE); 
-                    //account.setNumberAccount((int)(Math.random()*(239999999- 230000000) + 230000000));
+                    account.setStateAccount(StateAccount.ACTIVE);
                     break;
                     
                 case "Saving":
                     account.setTypeAccount("Savings Account");
+                    numberAccount = Integer.parseInt(numberAccount("46"));
+                    account.setNumberAccount(numberAccount);
                     account.setCreationDate(LocalDate.now());
                     account.setStateAccount(StateAccount.ACTIVE);
-                    //account.setNumberAccount((int)(Math.random()*(469999999 - 460000000) + 460000000));
                     break;
-           }
-           /*  for(int i=1; i<=8; i++){
-                initialNumber = initialNumber + numberAccount;
-            }*/
-        }
-    }
-    if(accountFound){
-        return account;
-    }
-        return accountRespository.save(account);
+           }*/
+           
         
-    }
+        
+    
+        
+        
+
 
     @Override
     public List<Account> getAllAccounts() {
@@ -64,8 +57,8 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public Account getAccountById(int idAccount) {
-        return accountRespository.findById(idAccount).orElse(null);
+    public Optional<Account> getAccountById(int idAccount) {
+        return accountRespository.findById(idAccount);
     }
 
     @Override
@@ -76,6 +69,7 @@ public class AccountServiceImplementation implements AccountService {
                 accountFound = true;
                 existAccount.setNumberAccount(account.getNumberAccount());
                 existAccount.setTypeAccount(account.getTypeAccount());
+                existAccount.setStateAccount(account.getStateAccount());
                 existAccount.setBalanceAccount(account.getBalanceAccount());
                 existAccount.setAvailableBalance(account.getAvailableBalance());
                 existAccount.setModificationDate(account.getModificationDate());
@@ -87,25 +81,39 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public void deleteAccountById(int idAccount) {
-        Account account = new Account();
-        double balance = account.getBalanceAccount();
-        double availableBalance = account.getAvailableBalance();
+    public boolean deleteAccountById(int idAccount) {
+        return getAccountById(idAccount).map(account ->{
+            accountRespository.deleteById(idAccount);
+            return true;
+        }).orElse(false);
+  
+    }
 
-        if (balance < 1 && availableBalance < 1) {
-            if (account.getTypeAccount() == "Current Account") {
-                accountRespository.deleteById(idAccount);
-                account.setStateAccount(StateAccount.CANCELLED);
-            } else if (account.getTypeAccount() == "Savings Account" && availableBalance < 1) {
-                accountRespository.deleteById(idAccount);
-                account.setStateAccount(StateAccount.CANCELLED);
-            }
-        }
+    public String numberRandomGenerated() {
+        Random numRandom = new Random();
+        int numRandomGenerated = numRandom.nextInt(99999999);
+        return Integer.toString(numRandomGenerated);
+
+    }
+    @Override
+    public String numberAccount(String number){
+        return number + numberRandomGenerated();
     }
 
     @Override
-    public Account availableBalance(Account account) {
-
-        return null;
+    public int accountNumber(Account account){
+        String value = null;
+        int finalValue = 0;
+        for(Account numAccount : getAllAccounts()){
+            if(numAccount.getNumberAccount() == account.getNumberAccount()){
+                int number = numAccount.getNumberAccount();
+                value = Integer.toString(number += 1);
+                finalValue = Integer.parseInt(value);
+            }
     }
+    return finalValue;
+}
+
+
+    
 }

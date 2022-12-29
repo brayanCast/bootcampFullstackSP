@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sophos.hellobank.entity.Account;
 import com.sophos.hellobank.entity.Client;
+import com.sophos.hellobank.enuminterface.StateAccount;
 import com.sophos.hellobank.repository.ClientRepository;
 import com.sophos.hellobank.repository.UserRepository;
+import com.sophos.hellobank.service.AccountService;
 import com.sophos.hellobank.service.ClientService;
 
 
@@ -37,6 +39,9 @@ public class ClientController{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AccountService accountService;
 
 
     @PostMapping
@@ -81,13 +86,31 @@ public class ClientController{
     }
     
     @DeleteMapping("/{idClient}")
-    public ResponseEntity<Client> deleteClientById(List<Account> account, @PathVariable("idClient") int idClient)throws Exception{
-        
-        if(clientService.deleteClientById(idClient)){
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Client> deleteClientById(Account account, @PathVariable("idClient") int idClient){
+        ResponseEntity<Client> response = null;
+        try {
+            if(!clientService.isPresent(account)){
+                StateAccount stateAccount = account.getStateAccount();
+                switch(stateAccount){
+                    case ACTIVE:
+                    response = new ResponseEntity<>(HttpStatus.CONFLICT);
+
+                    case INACTIVE:
+                    response = new ResponseEntity<>(HttpStatus.CONTINUE);
+    
+                    case CANCELLED:
+                    clientService.deleteClientById(idClient);
+                    response = new ResponseEntity<>(HttpStatus.OK);
+                }
+                 response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            else{
+                clientService.deleteClientById(idClient);
+                response = new ResponseEntity<>(HttpStatus.OK);
+            }
+            return response;
+        } catch (Exception e) {
+            return response;
         }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }   
     }
 }

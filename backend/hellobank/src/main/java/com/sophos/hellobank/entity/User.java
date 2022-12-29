@@ -39,9 +39,8 @@ public class User implements Serializable {
     @Column(name = "passwordUser")
     private String passwordUser;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Client> client;
-
 
     public User() {
     }
@@ -50,8 +49,6 @@ public class User implements Serializable {
         this.documentNumberUser = documentNumberUser;
         this.passwordUser = passwordUser;
     }
-
-    
 
     public User(int idUser, int documentNumberUser, String nameUser, String lastNameUser, String passwordUser,
             List<Client> client) {
