@@ -24,19 +24,19 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idUser", unique = true)
+    @Column(name = "id_user", unique = true)
     private int idUser;
 
-    @Column(name = "documentNumberUser", length = 20, nullable = false, unique = true)
+    @Column(name = "document_number_user", length = 20, nullable = false, unique = true)
     private int documentNumberUser;
 
-    @Column(name = "nameUser")
+    @Column(name = "name_user")
     private String nameUser;
 
-    @Column(name = "lastNameUser")
+    @Column(name = "last_name_user")
     private String lastNameUser;
 
-    @Column(name = "passwordUser")
+    @Column(name = "password_user")
     private String passwordUser;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")

@@ -25,41 +25,53 @@ public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idTransaction", unique = true)
+    @Column(name="id_transaction", unique = true)
     private int idTransaction;
 
-    @Column(name="typeTransaction")
+    @Column(name="type_transaction")
     private TypeTransaction typeTransaction;
 
-    @Column(name="dateMovementTransaction")
+    @Column(name="date_movement_transaction")
     private LocalDateTime dateMovementTransaction;
 
-    @Column(name="descriptionTransaction")
+    @Column(name="description_transaction")
     private String descriptionTransaction;
 
-    @Column(name="valueTransaction")
+    @Column(name="value_transaction")
     private double valueTransaction;
 
-    @Column(name="typeMovementTransaction")
+    @Column(name="type_movement")
     private String typeMovementTransaction;
 
     @ManyToOne
-    @JoinColumn(name="idAccount")
-    private Account idAccount;
+    @JoinColumn(name="id_account")
+    private Account account;
 
 
     public Transaction() {
     }
 
+
     public Transaction(int idTransaction, TypeTransaction typeTransaction, LocalDateTime dateMovementTransaction,
-            String descriptionTransaction, double valueTransaction, String typeMovementTransaction, Account idAccount) {
+            String descriptionTransaction, double valueTransaction, String typeMovementTransaction, Account account) {
         this.idTransaction = idTransaction;
         this.typeTransaction = typeTransaction;
         this.dateMovementTransaction = dateMovementTransaction;
         this.descriptionTransaction = descriptionTransaction;
         this.valueTransaction = valueTransaction;
         this.typeMovementTransaction = typeMovementTransaction;
-        this.idAccount = idAccount;
+        this.account = account;
     }
+
+
+    @Override
+    public String toString() {
+        return "Transaction [idTransaction=" + idTransaction + ", typeTransaction=" + typeTransaction
+                + ", dateMovementTransaction=" + dateMovementTransaction + ", descriptionTransaction="
+                + descriptionTransaction + ", valueTransaction=" + valueTransaction + ", typeMovementTransaction="
+                + typeMovementTransaction + ", account=" + account + "]";
+    }
+
+    
 
 }

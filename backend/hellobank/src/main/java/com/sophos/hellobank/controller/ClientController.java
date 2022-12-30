@@ -65,7 +65,7 @@ public class ClientController{
     } 
 
     @GetMapping("/list/{idClient}")
-    public ResponseEntity<Client> getClientById(@PathVariable("idClient")int idClient){
+    public ResponseEntity<Client> getClientById(@PathVariable("idClient")int idClient, List<Account> account){
         return clientService.getClientById(idClient).map(client -> new ResponseEntity<>(client, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

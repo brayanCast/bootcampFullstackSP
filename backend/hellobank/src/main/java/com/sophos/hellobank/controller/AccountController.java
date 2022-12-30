@@ -3,7 +3,7 @@ package com.sophos.hellobank.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,15 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sophos.hellobank.entity.Account;
-import com.sophos.hellobank.entity.Client;
+
 import com.sophos.hellobank.enuminterface.StateAccount;
 import com.sophos.hellobank.repository.AccountRepository;
+import com.sophos.hellobank.repository.UserRepository;
 import com.sophos.hellobank.service.AccountService;
 
 
 @RestController
-@RequestMapping(value = "/account")
+@RequestMapping(value = "{nameUser}/{nameClient}/account")
 public class AccountController {
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     AccountRepository accountRepository;
@@ -36,11 +40,10 @@ public class AccountController {
 
 
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account){
-       Optional<Client> clientCreated = Optional.empty();
+    public ResponseEntity<Account> createAccount(@RequestBody Account account, @PathVariable("nameUser") String nameUser, 
+    @PathVariable("nameClient") String nameClient){
 
         try {
-            if(!clientCreated.isPresent()){
                 String typeAccount = account.getTypeAccount();
                 switch(typeAccount){
                 case "Current":
@@ -58,7 +61,7 @@ public class AccountController {
                     break;
                 }
                 accountService.createAccount(account);
-            }
+            
             return new ResponseEntity<Account>(account, HttpStatus.OK);  
                 
         } catch (Exception e) {

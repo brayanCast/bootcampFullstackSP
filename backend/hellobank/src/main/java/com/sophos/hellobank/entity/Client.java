@@ -32,44 +32,44 @@ public class Client implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idClient")
+    @Column(name="id_client")
     private int idClient;
 
-    @Column(name="numberDocument", unique = true)
-    private int numberDocument ;
+    @Column(name="number_document", unique = true)
+    private int numberDocument;
 
-    @Column(name="documentType")
+    @Column(name="document_type")
     private DocumentType documentType;
     
-    @Column(name="nameClient")
+    @Column(name="name_client")
     private String nameClient;
 
-    @Column(name="lastNameClient")
+    @Column(name="last_name_client")
     private String lastNameClient;
 
-    @Column(name="emailClient")
+    @Column(name="email_client")
     private String emailClient;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column(name="birthDate")
+    @Column(name="birth_date")
     private LocalDate birthDate;
 
-    @Column(name="modifyUser")
+    @Column(name="modify_user")
     private String modifyUser;
 
-    @Column(name="nameUser")
+    @Column(name="name_user")
     private String creationUser;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column(name="creationDate")
+    @Column(name="creation_date")
     private LocalDate creationDate = LocalDate.now();
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Column(name="modificationDate")
+    @Column(name="modification_date")
     private LocalDateTime modificationDate = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name="idUser")
+    @JoinColumn(name="id_user")
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "client")
@@ -77,6 +77,12 @@ public class Client implements Serializable{
 
     public Client() {
     }
+
+    public Client(int numberDocument, String nameClient) {
+        this.numberDocument = numberDocument;
+        this.nameClient = nameClient;
+    }
+
 
     public Client(int idClient, int numberDocument, DocumentType documentType, String nameClient, String lastNameClient,
             String emailClient, LocalDate birthDate, String modifyUser, String creationUser, LocalDate creationDate,
