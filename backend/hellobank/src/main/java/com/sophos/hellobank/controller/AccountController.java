@@ -26,7 +26,7 @@ import com.sophos.hellobank.service.AccountService;
 
 
 @RestController
-@RequestMapping(value = "{nameUser}/{nameClient}/account")
+@RequestMapping(value = "{nameUser}/account")
 public class AccountController {
 
     @Autowired

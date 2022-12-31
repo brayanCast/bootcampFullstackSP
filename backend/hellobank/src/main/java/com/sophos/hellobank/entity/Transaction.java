@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.sophos.hellobank.enuminterface.TypeMovement;
 import com.sophos.hellobank.enuminterface.TypeTransaction;
 
 import lombok.Getter;
@@ -41,7 +42,7 @@ public class Transaction implements Serializable {
     private double valueTransaction;
 
     @Column(name="type_movement")
-    private String typeMovementTransaction;
+    private TypeMovement typeMovement;
 
     @ManyToOne
     @JoinColumn(name="id_account")
@@ -51,26 +52,26 @@ public class Transaction implements Serializable {
     public Transaction() {
     }
 
-
     public Transaction(int idTransaction, TypeTransaction typeTransaction, LocalDateTime dateMovementTransaction,
-            String descriptionTransaction, double valueTransaction, String typeMovementTransaction, Account account) {
+            String descriptionTransaction, double valueTransaction, TypeMovement typeMovement, Account account) {
         this.idTransaction = idTransaction;
         this.typeTransaction = typeTransaction;
         this.dateMovementTransaction = dateMovementTransaction;
         this.descriptionTransaction = descriptionTransaction;
         this.valueTransaction = valueTransaction;
-        this.typeMovementTransaction = typeMovementTransaction;
+        this.typeMovement = typeMovement;
         this.account = account;
     }
-
 
     @Override
     public String toString() {
         return "Transaction [idTransaction=" + idTransaction + ", typeTransaction=" + typeTransaction
                 + ", dateMovementTransaction=" + dateMovementTransaction + ", descriptionTransaction="
-                + descriptionTransaction + ", valueTransaction=" + valueTransaction + ", typeMovementTransaction="
-                + typeMovementTransaction + ", account=" + account + "]";
+                + descriptionTransaction + ", valueTransaction=" + valueTransaction + ", typeMovement=" + typeMovement
+                + ", account=" + account + "]";
     }
+
+    
 
     
 
