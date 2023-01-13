@@ -10,8 +10,6 @@ import com.sophos.hellobank.repository.AccountRepository;
 import com.sophos.hellobank.repository.TransactionRepository;
 import com.sophos.hellobank.entity.Account;
 import com.sophos.hellobank.entity.Transaction;
-import com.sophos.hellobank.enuminterface.TypeMovement;
-import com.sophos.hellobank.enuminterface.TypeTransaction;
 
 @Service
 public class TransactionServiceImplementation implements TransactionService {
@@ -22,23 +20,11 @@ public class TransactionServiceImplementation implements TransactionService {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    AccountService accountService;
+
     @Override
     public Transaction createTransaction(Transaction transaction) {
-        TypeTransaction typeTransaction = transaction.getTypeTransaction();
-        for(Transaction newtransaction : getAllTransaction()){
-            switch(typeTransaction){
-                case CONSIGNMENT:
-                newtransaction.setTypeTransaction(TypeTransaction.CONSIGNMENT);
-                consigmentMethod(transaction);
-                case RETIREMENT:
-                newtransaction.setTypeTransaction(TypeTransaction.RETIREMENT);
-                retirementMethod(transaction);
-                case TRANSFERINTOACCOUNTS:
-                newtransaction.setTypeTransaction(TypeTransaction.TRANSFERINTOACCOUNTS);
-                transferIntoAccountMethod(transaction);
-            }
-
-        }
         return transactionRepository.save(transaction);
     }
 
@@ -71,74 +57,40 @@ public class TransactionServiceImplementation implements TransactionService {
     }
 
     @Override
-    public void deleteTransactionById(int idTransaction) {
-
+    public boolean deleteTransactionById(int idTransaction) {
+        return getTransactionById(idTransaction).map(account ->{
+            transactionRepository.deleteById(idTransaction);
+            return true;
+        }).orElse(false);
     }
 
-    @Override
-    public double consigmentMethod(Transaction transaction) {
-        return debitMovement();
-    }
-
-    @Override
-    public double retirementMethod(Transaction transaction) {
-        Account account = new Account();
-        double balance = account.getBalanceAccount();
-        double transactionValue = transaction.getValueTransaction();
-
-        if(balance >= transactionValue){
-            return creditMovement();
-        }
-        else{
-            return balance;
-        }
-    }
-
-    @Override
-    public double transferIntoAccountMethod(Transaction transaction) {
-        Account account = new Account();
-        String numberAccount1 = account.getNumberAccount();
-        double balance1 = account.getBalanceAccount();
-        double availableBalance1 = account.getAvailableBalance();
-        String numberAccount2 = account.getNumberAccount();
-        double balance2 = account.getBalanceAccount();
-        double availableBalance2 = account.getAvailableBalance();
-        double transactionValue = transaction.getValueTransaction();
-        if (numberAccount2 != null && numberAccount1 != null) {
-            if (balance1 >= transactionValue) {
-                availableBalance1 = balance1 - transactionValue;
-                availableBalance2 = balance2 + transactionValue;
-            }
-            return availableBalance1;
-        }
-       return availableBalance2;
-    }
-
-    @Override
-    public double debitMovement(){
-        Account account = new Account();
-        double balance = account.getBalanceAccount();
-        double availableBlance = account.getAvailableBalance();
+	@Override
+	public void transferIntoAccount(int idAccountSource, int idAccountTarget) {
         Transaction transaction = new Transaction();
-        double transactionValue = transaction.getValueTransaction();
-        transaction.setTypeMovement(TypeMovement.DEBIT);
+        Account accountSource = accountService.getAccountById(idAccountSource);
+        Account accountTarget = accountService.getAccountById(idAccountTarget);
 
-        availableBlance = balance + transactionValue;
-        
-        return availableBlance;
-    }
+        double balanceSource = accountSource.getBalanceAccount() - transaction.getValueTransaction();
+        double balanceTarget = accountTarget.getBalanceAccount() + transaction.getValueTransaction();
+	}
 
-    @Override
-    public double creditMovement() {
+	@Override
+	public double retirement(double transactionValue) {
         Account account = new Account();
-        double balance = account.getBalanceAccount();
-        double availableBalance = account.getAvailableBalance();
         Transaction transaction = new Transaction();
-        double transactionValue = transaction.getValueTransaction();
-        transaction.setTypeMovement(TypeMovement.CREDIT);
-        availableBalance = balance - transactionValue;
+        double availableBalance = account.getBalanceAccount() - transaction.getValueTransaction();
+		return availableBalance;
+	}
 
-        return availableBalance;
-    }
+	@Override
+	public double consigment(double transactionValue) {
+        Account account = new Account();
+        Transaction transaction = new Transaction();
+        double availableBalance = account.getBalanceAccount() + transaction.getValueTransaction();
+		return availableBalance;
+	}
+
+    
+    
 
 }

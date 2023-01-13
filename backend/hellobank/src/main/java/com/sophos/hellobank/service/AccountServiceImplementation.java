@@ -1,8 +1,6 @@
 package com.sophos.hellobank.service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,7 @@ public class AccountServiceImplementation implements AccountService {
     TransactionRepository transactionRespository;
 
     @Override
-    public Account createAccount(Account account){         
+    public Account createAccount(Account account){
         return accountRespository.save(account);
     }        
 
@@ -31,8 +29,8 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public Optional<Account> getAccountById(int idAccount) {
-        return accountRespository.findById(idAccount);
+    public Account getAccountById(Integer idAccount) {
+        return accountRespository.findById(idAccount).orElse(null);
     }
 
     @Override
@@ -55,37 +53,33 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public boolean deleteAccountById(int idAccount) {
-        return getAccountById(idAccount).map(account ->{
+    public void deleteAccountById(int idAccount) {
             accountRespository.deleteById(idAccount);
-            return true;
-        }).orElse(false);
-  
     }
 
-    public String numberRandomGenerated() {
+    /*  public String numberRandomGenerated() {
         Random numRandom = new Random();
-        int numRandomGenerated = numRandom.nextInt(999999999);
-        return Integer.toString(numRandomGenerated);
+        return Integer.toString(numRandom.nextInt(99999999));
 
     }
+
     @Override
     public String numberAccount(String number){
         return number + numberRandomGenerated();
     }
 
-    @Override
+  @Override
     public String accountNumber(Account account){
-        String value = null;
-        for(Account numAccount : getAllAccounts()){
-            if(numAccount.getNumberAccount() == account.getNumberAccount()){
-                int number = Integer.parseInt(numAccount.getNumberAccount());
-                value = Integer.toString(number += 1);
+        String valueString = null;
+        for(Account currentAccount : getAllAccounts()){
+            if(currentAccount.getNumberAccount() == account.getNumberAccount()){
+                int value = Integer.parseInt(currentAccount.getNumberAccount());
+                valueString = Integer.toString(value += 1);
+                return valueString;
             }
-    }
-    return value;
-}
+        }
+    return null;
+    }*/
 
 
-    
 }

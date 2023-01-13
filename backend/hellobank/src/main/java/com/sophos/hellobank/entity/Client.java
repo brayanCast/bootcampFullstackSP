@@ -110,16 +110,4 @@ public class Client implements Serializable{
                 + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate + ", user=" + user
                 + ", account=" + account + "]";
     }
-
-    
-    
-
-
-
-
-
-    
-
-    
-    
 }

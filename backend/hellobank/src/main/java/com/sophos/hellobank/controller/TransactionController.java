@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.sophos.hellobank.entity.Account;
 import com.sophos.hellobank.entity.Transaction;
+import com.sophos.hellobank.enuminterface.TypeTransaction;
 import com.sophos.hellobank.repository.TransactionRepository;
 import com.sophos.hellobank.repository.UserRepository;
 import com.sophos.hellobank.service.AccountService;
@@ -34,6 +37,34 @@ public class TransactionController {
     AccountService accountService;
 
     @PostMapping
+    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction, int idAccountSource, int idAccountTarget){
+        List<Account> existAccount = accountService.getAllAccounts();
+        TypeTransaction typeTransaction = transaction.getTypeTransaction();
+        Account account = new Account();
+
+        try {
+            if(existAccount != null){
+                switch(typeTransaction){
+                    case CONSIGNMENT:
+
+                        account.setAvailableBalance(transactionService.consigment(transaction.getValueTransaction()));
+                        break;
+                    case RETIREMENT:
+                        account.setAvailableBalance(transactionService.retirement(transaction.getValueTransaction()));
+                        break;
+                    case TRANSFERINTOACCOUNTS:
+                    account.setAvailableBalance(transactionService.transferIntoAccount(idAccountSource, idAccountTarget));
+
+                    
+                }
+                
+
+            }
+            return new ResponseEntity<>(transactionService.createTransaction(transaction), HttpStatus.OK)
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
 
     @PutMapping
 

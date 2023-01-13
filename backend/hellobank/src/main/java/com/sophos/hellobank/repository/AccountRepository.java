@@ -9,6 +9,4 @@ import com.sophos.hellobank.entity.Account;
 
 @CrossOrigin
 public interface AccountRepository extends JpaRepository<Account, Integer>{
-    Account findByNumberAccount(String numberAccount);
-
 }

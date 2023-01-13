@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class Account implements Serializable {
     private int idAccount;
 
     @Column(name="number_account", unique = true)
-    private String numberAccount;
+    private Integer numberAccount;
 
     @Column(name="type_account")
     private String typeAccount;
@@ -44,8 +45,8 @@ public class Account implements Serializable {
     @Column(name="balance_account")
     private double balanceAccount;
 
-    @Column(name="available_balance_account")
-    private double availableBalance;
+    @Column(name="available_balance")
+    private Double availableBalance;
 
     @Column(name="creation_date")
     private LocalDate creationDate;
@@ -60,14 +61,12 @@ public class Account implements Serializable {
     @JoinColumn(name="id_client")
     private Client client;
 
-    
-
     public Account() {
     }
 
-    public Account(int idAccount, String numberAccount, String typeAccount, StateAccount stateAccount,
-            double balanceAccount, double availableBalance, LocalDate creationDate, LocalDateTime modificationDate,
-            Client client) {
+    public Account(int idAccount, int numberAccount, String typeAccount, StateAccount stateAccount,
+            double balanceAccount, Double availableBalance, LocalDate creationDate, LocalDateTime modificationDate,
+            List<Transaction> transaction, Client client) {
         this.idAccount = idAccount;
         this.numberAccount = numberAccount;
         this.typeAccount = typeAccount;
@@ -76,8 +75,11 @@ public class Account implements Serializable {
         this.availableBalance = availableBalance;
         this.creationDate = creationDate;
         this.modificationDate = modificationDate;
+        this.transaction = transaction;
         this.client = client;
     }
+
+
 
     @Override
     public String toString() {
@@ -85,6 +87,10 @@ public class Account implements Serializable {
                 + ", stateAccount=" + stateAccount + ", balanceAccount=" + balanceAccount + ", availableBalance="
                 + availableBalance + ", creationDate=" + creationDate + ", modificationDate=" + modificationDate
                 + ", client=" + client +"]";
+    }
+
+    public Optional<Account> map(Object object) {
+        return null;
     }
     
 }

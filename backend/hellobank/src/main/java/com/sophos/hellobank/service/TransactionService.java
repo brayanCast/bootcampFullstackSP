@@ -11,11 +11,10 @@ public interface TransactionService {
     public List<Transaction> getAllTransaction();
     public Optional<Transaction> getTransactionById(int idTransaction);
     public Transaction updateTransaction(Transaction transaction);
-    public void deleteTransactionById(int idTransaction);
-    public double consigmentMethod(Transaction transaction);
-    public double retirementMethod(Transaction transaction);
-    public double transferIntoAccountMethod(Transaction transaction);
-    public double debitMovement();
-    public double creditMovement();
+    public boolean deleteTransactionById(int idTransaction);
+    public void transferIntoAccount(int idAccountSource, int idAccountTarget);
+    public double retirement(double transactionValue);
+    public double consigment(double transactionValue);
+
     
 }

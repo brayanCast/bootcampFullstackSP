@@ -9,11 +9,11 @@ public interface AccountService{
     
     public Account createAccount(Account account);
     public List<Account> getAllAccounts();
-    public Optional<Account> getAccountById(int idAccount);
+    public Account getAccountById(Integer idAccount);
     public Account updateAccount(Account account);
-    public boolean deleteAccountById(int idAccount);
-    public String numberRandomGenerated();
-    public String numberAccount(String number);
-    public String accountNumber(Account account);
+    public void deleteAccountById(int idAccount);
+    //public String numberRandomGenerated();
+    //public String numberAccount(String number);
+    //public String accountNumber(Account account);
 
 }
