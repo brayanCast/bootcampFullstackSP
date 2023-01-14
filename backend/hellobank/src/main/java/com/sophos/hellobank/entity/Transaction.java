@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="bank_transaction")
+@Table(name="transaction")
 public class Transaction implements Serializable {
 
     @Id

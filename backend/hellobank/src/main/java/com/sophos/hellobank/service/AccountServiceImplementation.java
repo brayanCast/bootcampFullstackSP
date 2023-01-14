@@ -56,8 +56,40 @@ public class AccountServiceImplementation implements AccountService {
     public void deleteAccountById(int idAccount) {
             accountRespository.deleteById(idAccount);
     }
+    /* 
+    @Override
+    public String generateNumberAccount(Account account) {
+        Random random = new Random();
+        String initNumber = "";
+        String typeAccount  = account.getTypeAccount();
+        switch(typeAccount){
+            case "Current":
+                initNumber = "23";
+                account.setTypeAccount("Current account");
+                break;
+            case "Saving":
+                initNumber = "46";
+                account.setTypeAccount("Savings account");
+                break;
 
-    /*  public String numberRandomGenerated() {
+        }
+
+       if(account.getTypeAccount().equals("Current")){
+            initNumber = "23";
+            account.setTypeAccount("Current account");
+        }
+        else if(account.getTypeAccount().equals("Saving")){
+            initNumber = "46";
+            account.setTypeAccount("Savings account");
+        }
+
+        int numRand = random.nextInt(10000000);
+        String numAccount = initNumber + String.format("%08d", numRand);
+
+        return numAccount;
+    }
+
+    / public String numberRandomGenerated() {
         Random numRandom = new Random();
         return Integer.toString(numRandom.nextInt(99999999));
 
@@ -79,7 +111,7 @@ public class AccountServiceImplementation implements AccountService {
             }
         }
     return null;
-    }*/
+    } */
 
 
 }

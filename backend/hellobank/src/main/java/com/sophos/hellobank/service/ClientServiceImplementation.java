@@ -3,6 +3,7 @@ package com.sophos.hellobank.service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +33,10 @@ public class ClientServiceImplementation implements ClientService{
     //Metodo para crear todos los clientes
     @Override
     public Client createClient(Client client){
+        Account account = new Account();
+        List<Account> accountClient = new ArrayList<>();
+        account.setClient(client);
+        accountClient.add(account);
         return clientRepository.save(client);
     }
 

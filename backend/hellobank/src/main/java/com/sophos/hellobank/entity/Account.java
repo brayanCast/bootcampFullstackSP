@@ -26,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="bank_account")
+@Table(name="account")
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Account implements Serializable {
     private int idAccount;
 
     @Column(name="number_account", unique = true)
-    private Integer numberAccount;
+    private String numberAccount;
 
     @Column(name="type_account")
     private String typeAccount;
@@ -64,7 +64,7 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(int idAccount, int numberAccount, String typeAccount, StateAccount stateAccount,
+    public Account(int idAccount, String numberAccount, String typeAccount, StateAccount stateAccount,
             double balanceAccount, Double availableBalance, LocalDate creationDate, LocalDateTime modificationDate,
             List<Transaction> transaction, Client client) {
         this.idAccount = idAccount;

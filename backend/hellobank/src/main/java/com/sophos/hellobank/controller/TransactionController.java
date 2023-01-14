@@ -5,24 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.sophos.hellobank.entity.Account;
 import com.sophos.hellobank.entity.Transaction;
 import com.sophos.hellobank.enuminterface.TypeTransaction;
+import com.sophos.hellobank.repository.AccountRepository;
 import com.sophos.hellobank.repository.TransactionRepository;
 import com.sophos.hellobank.repository.UserRepository;
 import com.sophos.hellobank.service.AccountService;
 import com.sophos.hellobank.service.TransactionService;
 
 @RestController
-@RequestMapping("{nameUser}/transaction")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @RequestMapping("/{name_user}/transaction")
 public class TransactionController {
 
     @Autowired
@@ -32,6 +35,9 @@ public class TransactionController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Autowired
     AccountService accountService;
@@ -46,23 +52,20 @@ public class TransactionController {
             if(existAccount != null){
                 switch(typeTransaction){
                     case CONSIGNMENT:
-
+                        transaction.setTypeTransaction(TypeTransaction.CONSIGNMENT);
                         account.setAvailableBalance(transactionService.consigment(transaction.getValueTransaction()));
                         break;
                     case RETIREMENT:
+                        transaction.setTypeTransaction(TypeTransaction.CONSIGNMENT);
                         account.setAvailableBalance(transactionService.retirement(transaction.getValueTransaction()));
                         break;
                     case TRANSFERINTOACCOUNTS:
-                    account.setAvailableBalance(transactionService.transferIntoAccount(idAccountSource, idAccountTarget));
-
-                    
-                }
-                
-
-            }
-            return new ResponseEntity<>(transactionService.createTransaction(transaction), HttpStatus.OK)
+                        transaction.setTypeTransaction(TypeTransaction.CONSIGNMENT);  
+                        break;
+            }}
+            return new ResponseEntity<>(transactionService.createTransaction(transaction), HttpStatus.OK);
         } catch (Exception e) {
-            // TODO: handle exception
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
     }
 
