@@ -13,6 +13,7 @@ export class ClientService {
   constructor(private httpClient : HttpClient) {  }
 
   getClientList():Observable<Client[]>{
-    return this.httpClient.get<Client[]>(`${this.baseURL}`)};
+    return this.httpClient.get<Client[]>(`${this.baseURL}`)
+  };
 
 }
